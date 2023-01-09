@@ -1,0 +1,323 @@
+* Create new vagrand file *
+- Create new vagrand file
+  vagrant init --minimal shekeriev/centos-stream-8
+
+- Open the VM
+  vagrand ssh
+
+
+
+* Install docker *
+- Add repo
+  sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- Install packages
+   sudo dnf install docker-ce docker-ce-cli containerd.io
+   
+- Start docker
+  sudo systemctl start docker
+   
+- Check docker status
+  systemctl status docker
+  
+  
+
+* RESOURCES MONITORING *
+  docker container status other
+  docker container top other
+    
+    
+* Docker Network *
+
+- Check all networks
+  docker network ls    
+  
+- Create new network
+  docker network create -d bridge --subnet 10.0.0.0/24 mybridge
+  
+- Inspect network
+  docker network inspect [NAME]
+
+- Create new container and add it to a network
+  sudo docker container run -dt --name [NAME] --network [NETWORK_NAME] [CONTAINER] [OPTIONS]
+
+
+* Docker Volumes *
+
+- Check all volumes
+  docker volume ls    
+  
+- Create new volume
+  docker volume create [NAME] [?METADATA]
+  
+- Create new container and implicitly add volume to it.
+  docker container create -v /[CONTAINER_NAME] --name con-store alpine /bin/true
+
+
+- Format volume
+  docker volume ls --format "{{.Name}}: {{.Driver}}: {{.Mountpoint}}"
+
+- Attach volume to container
+  docker container run -it -v /[VOLUME_NAME] --name [CONTAINER_NAME] [CONTAINER] /bin/bash
+
+- Create new container and attach it to a volume
+  docker container run -it --volumes-from [NAME] --name [VOLUME_NAME] [CONTAINER] bin/bash
+
+- Add file to volume from a container
+  First attach the container 
+  docker container attach [CONTAINER_NAME]
+  
+  Then 
+  echo [FILE_TEXT] >> /[VOLUME_NAME]/[FILE_NAME]
+
+- Check a file data
+  cat /[VOLUME_NAME]/[FILE_NAME]
+  
+    
+ * Generic commands *
+- Get all docker commands
+   docker
+
+- Docker status
+   sudo docker version
+   docker version
+ 
+- Get system info
+   sudo docker system info
+ 
+- Run container
+   sudo docker container run container-name 
+
+- Change usermod /Add current user as member to get rid of sudo/
+   sudo usermod -aG docker $USER
+    
+- Then close the current session
+   exit
+
+- Open new session
+   ssh
+   
+- Get id
+   id 
+   
+- Start docker automaticaly 
+   sudo systemctl enable docker
+   
+- Search the Docker Hub for images
+   docker search [image-name]
+   
+- Run command in a new container
+   docker container run [options] [image-name]
+
+- List locally available images
+   docker image ls [repository-name]
+
+- Remove one or more containers
+   docker container rm [container-name]
+   
+- Remove one or more images
+   docker rmi [image-name]
+
+- Create new container
+   docker container create [options] [image-name] [command] [args]
+
+!- Create new image and commit 
+  docker container commit [META DATA] [CONTAINER] [NEW IMAGE NAME]
+
+- Create new image
+  docker image build -t [CURRENT FOLDER]
+  docker image build -t alp-htop - << EOF
+  
+- Clear all images
+  docker image rm $(docker image ls -q)
+
+
+- Create new container with port and absolute path
+  docker container run -d -p 8080:80 --name [CONTAINER_NAME] -v $(pwd)/web:/var/www/html php:8.0-apache
+  
+- Kill container
+   docker container kill [container-name]
+
+- Start container
+   docker container start [options] [container-name]
+
+- Restart container
+   docker container restart [options] [container-name]
+   
+- Stop container
+   docker container stop [options] [container-name]
+   
+- Exit from container without killing it 
+   ctrl p + ctrl q
+
+- Stop all containers
+  docker container stop $(docker container ls -q)
+
+- Pause container
+   docker container pause [options] [container-name]
+
+- Unpause container
+   docker container unpause [options] [container-name]
+
+- Delete all stopped containers
+  docker container prune
+ 
+- Attach to a running container
+   docker container attach [options] [container-name]
+
+- Tag an image into a repository
+   docker image tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+- Push an image or repository to a registry
+   docker image push [options] NAME[:TAG]
+
+- Login to a registry
+   docker login
+
+- Logout from a registry
+   docker logout
+   
+- Import the contents from a tarball to create a filesystem image
+   docker image import [options] file|URL|- [REPOSITORY[:TAG]]
+
+- Export container's filesystem as a tar archive
+   docker container export [options] [container-name]
+
+- Save one or more images to a tar archive or STDOUT
+   docker image save [options] IMAGE [IMAGE]
+
+
+* Docker compose commands *
+
+- Build or rebuild services
+   ... build [option] [--build-arg key=val...] [SERVICE]
+
+- Build (re)create, start and attach containers for a service
+   ... up [options] [--scale SERVICE=NUM...] [SERVICE...]
+
+- Start all containers and aggregate the output
+  docker-compose up
+
+- Start all containers in a daemon mode
+  docker-compose up -d
+
+- Stop containers and remove everything created by up
+  docker-compose down [options]
+  
+- Remove everything including all images
+  docker-compose down --rmi all
+
+- Remove declared named volumes and anonymous volumes
+  docker-compose down --volumes
+  
+- List containers
+  docker-compose ps [options] [SERVICE...]
+  
+- List running containers
+  docker-compose ps
+  
+- Display ID for a particular container
+  docker-compose ps -q com-php
+
+- View output from containers
+  docker-compose logs [options] [SERVICE...]
+
+- Make new session to a container
+  docker container exec -it [NAME] bash
+
+- View logs for all containers
+  docker-compose down logs
+
+- Follow the log for com-php service
+  docker-compose logs -f com-php
+
+- Start existing container
+  docker-compose start [SERVICE...]
+
+- Start all containers
+  docker-compose start
+
+- Start particular container / service
+  docker-compose start com-php
+
+- Stop existing container
+  docker-compose stop [SERVICE...]
+
+- Stop all containers
+  docker-compose stop
+
+- Stop particular container / service with timeout
+  docker-compose stop -t 20 com-php
+
+- Remove stopped service containers
+  docker-compose rm [options] [SERVICE...]
+
+- Remove all stopped containers
+  docker-compose rm
+
+- Stop all containers and remove them without asking
+  docker-compose rm -s -f
+
+
+* Install docker compose * 
+
+- Make new directory
+ mkdir -p ~/.docker/cli-plugins/
+
+- Download repo
+ curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o    ~/.docker/cli-plugins/docker-compose
+ 
+- Change perms
+ chmod +x ~/.docker/cli-plugins/docker-compose
+
+- Test if works
+ docker compose version
+
+
+* Docker compose commands * 
+
+- Test docker compose config
+ docker compose config
+
+- Build components
+ docker compose build
+
+- Start 
+ docker compose up
+
+- Start detached
+ docker compose up -d
+
+- List all services components
+ docker compose ps
+
+- List services processes 
+ docker compose top
+
+- List services logs 
+ docker compose logs
+
+- Stop component
+ docker compose down
+
+
+* Docker Swarm mode * 
+
+- Initialize cluster
+ docker swarm init
+
+- Join to a cluster
+ docker swarm join
+ 
+- Leave a cluster
+ docker swarm leave
+ 
+- Check all nodes
+ docker node ls
+ 
+- Check service tasks
+ docker service ps 
+
+- Scale service tasks
+ docker service scale [TASK_NAME]=[COUNT]
+

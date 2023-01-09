@@ -1,0 +1,33 @@
+- Config username 
+ git config --global user.name "[USERNAME]"
+
+- Config user email
+ git config --global user.email "[EMAIL]"
+ 
+- Check all changes 
+ git config -l
+ 
+- Check folder tree
+ tree [NAME]/
+ 
+- Check folder tree with hidden folders
+ tree -a [NAME]/
+ 
+- Remove folder
+  rm -rf [FOLDER_NAME]
+
+- Init branch
+  git init -b main
+
+- Add remote repo
+ git remote add origin [REPO_URL]
+
+- List current remote connections/ List remote repos
+ git remote -v
+
+- Cache user credentials
+  git config --global credential.helper "cache --timeout=3600"
+
+- Check logs
+ git log
+

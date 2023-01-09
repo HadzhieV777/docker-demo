@@ -1,0 +1,34 @@
+# Shell Scripting 
+https://www.geeksforgeeks.org/shell-scripting-define-bin-bash/
+
+# Subnet 
+https://www.cloudflare.com/learning/network-layer/what-is-a-subnet/
+
+# Docker Bind mounts
+https://docs.docker.com/storage/bind-mounts/
+
+# Docker Volumes
+https://docs.docker.com/storage/volumes/
+
+# Docker Compose
+https://docs.docker.com/compose/
+
+# Microservices
+https://aws.amazon.com/microservices/
+https://learn.microsoft.com/en-us/devops/deliver/what-are-microservices
+
+# Continious Integration(CI)
+https://learn.microsoft.com/en-us/devops/develop/what-is-continuous-integration
+
+# Continious Delivery(CD)
+https://learn.microsoft.com/en-us/devops/deliver/what-is-continuous-delivery
+
+# Git - Working tree
+https://www.geeksforgeeks.org/git-working-tree/
+
+# Git remote
+https://www.git-tower.com/learn/git/commands/git-remote/
+
+# Docker Swarm mode 
+https://docs.docker.com/engine/swarm/
+https://docs.docker.com/engine/swarm/swarm-tutorial/
